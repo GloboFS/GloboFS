@@ -1,6 +1,16 @@
 GloboFS Planning
 ================
 
+Push/Pull
+---------
+Changes on remote sites are pushed inward into 'tickle' style files using append 
+mode.
+
+Access to hashes that don't exist locally are pulled inward as needed.
+
+You should be able to `cat **/* > /dev/null` to create a mirror of the entire 
+volume.  Helper tools will be provided via the globofs script.
+
 Assume Nothing Style
 --------------------
 
@@ -36,6 +46,10 @@ Things we don't assume will work:
 
 - File metadata
 
+Things we don't assume will happen:
+
+- Only one 'client' per node.
+
 Hashing use
 -----------
 
@@ -49,9 +63,11 @@ There should be a "local" directory always containing locally cached hashes as
 well as a copy of the local metadata.  In the same directory are directories 
 defining other servers elsewhere. "local" should be user defined.
 
+A GloboFS Volume is simply a directory.. somewhere.. locally.
+
 Example:
 
-- Root Directory
+- GloboFS Volume Directory
   - local
   - server01.alaska.example.com
   - server01.idaho.example.com
@@ -62,18 +78,21 @@ simple syntax.
 
 Example:
 
-- Root Directory
+- GloboFS Volume Directory
+
   - local
+
     - config
 
-```ini
-hi there
+```python
+path=/srv/globofs_volume/ #So that we can just specify a config
+cacheonly=no
+cachetime=30m
 ```
-
-- Root Directory
   - server01.alaska.example.com
+
     - config
 
-```ini
-hi there
+```python
+path=/network/remote/server01.alaska/srv/globofs_volume/
 ```
