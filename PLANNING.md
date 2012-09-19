@@ -44,3 +44,30 @@ size based on configuration information.
 
 Directory Structure
 -------------------
+
+There should be a "local" directory always containing locally cached hashes as 
+well as a copy of the local metadata.  In the same directory are directories 
+defining other servers elsewhere. "local" should be user defined.
+
+Example:
+
+- Root Directory
+  - local
+  - server01.alaska.example.com
+  - server01.idaho.example.com
+  - server03.hawaii.example.com
+
+Each directory will have a small config file named "config" that has a very 
+simple syntax.
+
+Example:
+
+- Root Directory
+  - local
+    - config
+      ``` hi there 
+```
+  - server01.alaska.example.com
+    - config
+      ``` sup dog
+```
