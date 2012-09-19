@@ -3,7 +3,8 @@ GloboFS Planning
 
 Push/Pull
 ---------
-Changes on remote sites are pushed inward into 'tickle' style files using append 
+Changes on remote sites are pushed inward into upstream logs style files using 
+append 
 mode.
 
 Access to hashes that don't exist locally are pulled inward as needed.
@@ -20,7 +21,7 @@ Things we require:
 
 - Python
 
-- Access to hard links on the local filesystem (for now)
+- Access to symlinks on the local filesystem (for now)
 
 - Access to other POSIX filesystems via
 
@@ -83,6 +84,7 @@ Example:
   - config
 
 ```python
+uuid=68d25a11-a34a-4bbb-a29e-c9bd06ff8c53
 path=/srv/globofs_volume/ #So that we can just specify a config
 cacheonly=no
 cachetime=30m
@@ -92,5 +94,63 @@ cachetime=30m
   - config
 
 ```python
+uuid=ea8192ee-593f-437f-af60-90d213995480
 path=/network/remote/server01.alaska/srv/globofs_volume/
 ```
+The following requires a bit of an example tree structure
+
+- File System
+  - Photos
+    - Trips
+      - Moon
+        - Photo1
+        - Photo2
+        - Photo3
+    - Cats
+      - Photo1
+      - Photo2
+      - Photo3
+  - Spreadsheets
+    - Spreadsheet1
+
+The metadata and hashes for Photos/Trips/Moon/Photo1 will be exploded like this:
+
+- GloboFS Volume
+  - local
+    - root
+      - Photos
+        - Trips
+          - Moon
+            - Photo1
+              - versions
+                - latest (not a symlink)
+                - 1348096774.177556349
+                - 1348095423.553456124
+              - hashes
+                  - 98
+                    - ea
+                      - 6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4.gz    
+                  - 50
+                    - c3
+                      - 93f158c3de2db92fa9661bfb00eda5b67c3a777c88524ed3417509631625.gz
+                  - 17
+                    - 2b
+                      - 36cab7a022ede944a25629da5a98ea1a45049d92b7b62f734138364ccebc.gz
+                  - ...
+    - hashes
+      - 98
+        - ea
+          - 6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4.gz    
+      - 50
+        - c3
+          - 93f158c3de2db92fa9661bfb00eda5b67c3a777c88524ed3417509631625.gz
+      - 17
+        - 2b
+          - 36cab7a022ede944a25629da5a98ea1a45049d92b7b62f734138364ccebc.gz
+      - ...
+    - upstream
+      - ea8192ee-593f-437f-af60-90d213995480
+        - updates
+            - latest
+            - 1348096028.125255438
+        
