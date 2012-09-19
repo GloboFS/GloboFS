@@ -65,6 +65,7 @@ Example:
 - Root Directory
   - local
     - config
+
 ```ini
 hi there
 ```
@@ -72,6 +73,7 @@ hi there
 - Root Directory
   - server01.alaska.example.com
     - config
+
 ```ini
 hi there
 ```
