@@ -1,4 +1,4 @@
-GloboFS
-=======
+GloboFS - Global Area Filesystem
+================================
 
-Wide Area Push/Pull Replicated File System
+Stuff
