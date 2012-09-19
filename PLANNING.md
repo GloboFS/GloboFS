@@ -65,9 +65,13 @@ Example:
 - Root Directory
   - local
     - config
-      ``` hi there 
+```ini
+hi there
 ```
+
+- Root Directory
   - server01.alaska.example.com
     - config
-      ``` sup dog
+```ini
+hi there
 ```
