@@ -78,20 +78,18 @@ simple syntax.
 
 Example:
 
-- GloboFS Volume Directory
+- local
 
-  - local
-
-    - config
+  - config
 
 ```python
 path=/srv/globofs_volume/ #So that we can just specify a config
 cacheonly=no
 cachetime=30m
 ```
-  - server01.alaska.example.com
+- server01.alaska.example.com
 
-    - config
+  - config
 
 ```python
 path=/network/remote/server01.alaska/srv/globofs_volume/
