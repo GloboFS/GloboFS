@@ -12,6 +12,23 @@ Access to hashes that don't exist locally are pulled inward as needed.
 You should be able to `cat **/* > /dev/null` to create a mirror of the entire 
 volume.  Helper tools will be provided via the globofs script.
 
+No RPC
+------
+
+No RPC servers
+
+No HTTP servers
+
+No dedicated metadata servers
+
+No masters
+
+No slaves
+
+Just love
+
+Use remote filesystems as data stores and rely on append mode writes
+
 Assume Nothing Style
 --------------------
 
