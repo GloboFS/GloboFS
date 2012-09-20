@@ -3,9 +3,9 @@ GloboFS Planning
 
 Push/Pull
 ---------
+
 Changes on remote sites are pushed inward into upstream logs style files using 
-append 
-mode.
+append mode.
 
 Access to hashes that don't exist locally are pulled inward as needed.
 
@@ -27,7 +27,8 @@ No slaves
 
 Just love
 
-Use remote filesystems as data stores and rely on append mode writes
+Use remote filesystems as data stores and rely on append mode writes as much as 
+possible.  It's not super atomic.. but it is reliable.
 
 Assume Nothing Style
 --------------------
@@ -111,25 +112,61 @@ Example filesystem we want to store in GloboFS:
 The metadata and hashes for Photos/Trips/Moon/Photo1 will be exploded like this:
 
 ```
-768608 ./upstream/ea8192ee-593f-437f-af60-90d213995480/updates/log
-768611 ./upstream/ea8192ee-593f-437f-af60-90d213995480/updates/1348100370.399189521
-768611 ./upstream/ea8192ee-593f-437f-af60-90d213995480/updates/1348096028.125255438
+Inode  File
+------ ---------------------------------------------------------------------------------------------------------------
+767445 ./spool/inbound/ea8192ee-593f-437f-af60-90d213995480/Photos/Trip/Moon/Photo1.jpg/versions/log
+768546 ./spool/inbound/ea8192ee-593f-437f-af60-90d213995480/Photos/Trip/Moon/Photo1.jpg/versions/1348096782.553456124
+767546 ./spool/outbound/ea8192ee-593f-437f-af60-90d213995480/Photos/Trip/Moon/Photo1.jpg/versions/log
+768621 ./spool/outbound/ea8192ee-593f-437f-af60-90d213995480/Photos/Trip/Moon/Photo1.jpg/versions/1348096028.125255438
 ...
-768490 ./root/Photos/Trip/Moon/Photo1/versions/log
-768546 ./root/Photos/Trip/Moon/Photo1/versions/1348096782.553456124
-768546 ./root/Photos/Trip/Moon/Photo1/versions/1348096782.553456124
+768490 ./root/Photos/Trip/Moon/Photo1.jpg/versions/log
+768546 ./root/Photos/Trip/Moon/Photo1.jpg/versions/1348096782.553456124
+768621 ./root/Photos/Trip/Moon/Photo1.jpg/versions/1348096028.125255438
 ...
-768570 ./root/Photos/Trip/Moon/Photo1/hashes/98/ea/6e/4f/216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
-768573 ./root/Photos/Trip/Moon/Photo1/hashes/50/c3/93/f1/58c3de2db92fa9661bfb00eda5b67c3a777c88524ed3417509631625
-768575 ./root/Photos/Trip/Moon/Photo1/hashes/17/2b/36/ca/b7a022ede944a25629da5a98ea1a45049d92b7b62f734138364ccebc
+768570 ./root/Photos/Trip/Moon/Photo1.jpg/hashes/98/ea/6e/4f/216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
+768573 ./root/Photos/Trip/Moon/Photo1.jpg/hashes/50/c3/93/f1/58c3de2db92fa9661bfb00eda5b67c3a777c88524ed3417509631625
+768575 ./root/Photos/Trip/Moon/Photo1.jpg/hashes/17/2b/36/ca/b7a022ede944a25629da5a98ea1a45049d92b7b62f734138364ccebc
 ...
 768570 ./hashes/98/ea/6e/4f/216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
 768573 ./hashes/50/c3/93/f1/58c3de2db92fa9661bfb00eda5b67c3a777c88524ed3417509631625
 768575 ./hashes/17/2b/36/ca/b7a022ede944a25629da5a98ea1a45049d92b7b62f734138364ccebc
 ```
 
-For brevity sake.. the full path for ```Photos/Trip/Moon/Photo1``` and the 
-recent hashes would be ```/srv/globofs/68d25a11-a34a-4bbb-a29e-c9bd06ff8c53/root/Photos/Trip/Moon/Photo1/versions/log```.
+The contents of the log files is as follows:
+```
+cat ./spool/inbound/ea8192ee-593f-437f-af60-90d213995480/Photos/Trip/Moon/Photo1.jpg/versions/log:
+
+1348096782.553456124
+
+cat ./spool/outbound/ea8192ee-593f-437f-af60-90d213995480/Photos/Trip/Moon/Photo1.jpg/versions/log
+
+1348096028.125255438
+
+cat ./root/Photos/Trip/Moon/Photo1.jpg/versions/log
+
+1348096028.125255438
+1348096782.553456124
+```
+The last line of the log file represents the most recent file that lists off 
+the hashes in order.. for example:
+
+```
+cat 1348096782.553456124
+
+98ea6e4f216f2fb4b69fff9b3a44842c38686ca685f3f55dc48c5d3fb1107be4
+50c393f158c3de2db92fa9661bfb00eda5b67c3a777c88524ed3417509631625
+172b36cab7a022ede944a25629da5a98ea1a45049d92b7b62f734138364ccebc
+```
+
+There are a few places for a collision so to speak.. which can be avoided by 
+using a major per node.  For instance the nanoseconds behind the timestamp
+1348096782.553456124 can be 1348096782.553456124100 for a major of 100 without 
+freaking out the nanosecond timer at all.  This is to be considered for the uber 
+paranoid.. however if you have two servers select the same second + nanosecond 
+to the 9th decimal place.. you're awesome.
+
+For brevity sake.. the full path for ```Photos/Trip/Moon/Photo1.jpg``` and the 
+recent hashes would be ```/srv/globofs/68d25a11-a34a-4bbb-a29e-c9bd06ff8c53/root/Photos/Trip/Moon/Photo1.jpg/versions/log```.
 
 Hard links (vs sym links) are used to allow us to do reference counting on 
 demand.  The hashes in the Photo direcory are hard linked to a primary hash 
