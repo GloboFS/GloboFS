@@ -125,3 +125,7 @@ There may be the potential of storing a log file per hash in order to reduce
 hard link requirements on filesystems that don't support many hard links per 
 directory... however the chances of having 200+ hashes 8 chars in to it is 
 substantially low.  It's still a race condition.
+
+Double referencing seems like a good option using log files to help with that 
+and it won't increase storage size that much since lots of data will fit into a 
+single filesystem block.
