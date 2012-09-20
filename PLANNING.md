@@ -111,7 +111,8 @@ The metadata and hashes for Photos/Trips/Moon/Photo1 will be exploded like this:
 768575 ./hashes/17/2b/36/ca/b7a022ede944a25629da5a98ea1a45049d92b7b62f734138364ccebc
 ```
 
-For brevity sake.. the full path for ```Photos/Trip/Moon/Photo1``` would be ```/srv/globofs/68d25a11-a34a-4bbb-a29e-c9bd06ff8c53/root/Photos/Trip/Moon/Photo1/versions/latest```.
+For brevity sake.. the full path for ```Photos/Trip/Moon/Photo1``` and the 
+recent hashes would be ```/srv/globofs/68d25a11-a34a-4bbb-a29e-c9bd06ff8c53/root/Photos/Trip/Moon/Photo1/versions/log```.
 
 Hard links (vs sym links) are used to allow us to do reference counting on 
 demand.  The hashes in the Photo direcory are hard linked to a primary hash 
