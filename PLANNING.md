@@ -165,9 +165,6 @@ freaking out the nanosecond timer at all.  This is to be considered for the uber
 paranoid.. however if you have two servers select the same second + nanosecond 
 to the 9th decimal place.. you're awesome.
 
-For brevity sake.. the full path for ```Photos/Trip/Moon/Photo1.jpg``` and the 
-recent hashes would be ```/srv/globofs/68d25a11-a34a-4bbb-a29e-c9bd06ff8c53/root/Photos/Trip/Moon/Photo1.jpg/versions/log```.
-
 Hard links (vs sym links) are used to allow us to do reference counting on 
 demand.  The hashes in the Photo direcory are hard linked to a primary hash 
 directory that will be shared by all files.  These can also be compressed.
@@ -179,6 +176,10 @@ There may be the potential of storing a log file per hash in order to reduce
 hard link requirements on filesystems that don't support many hard links per 
 directory... however the chances of having 200+ hashes 8 chars in to it is 
 substantially low.  It's still a race condition.
+
+There is also obviously a problem with being only able to store so many hard 
+links in a directory depending on the backing filesystem.  This means only 
+around 300 versions of a file can be stored.. oh well right?
 
 Double referencing seems like a good option using log files to help with that 
 and it won't increase storage size that much since lots of data will fit into a 
