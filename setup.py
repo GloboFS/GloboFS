@@ -14,9 +14,8 @@ setup(
     url='https://github.com/whardier/GloboFS',
     license='MIT',
     description='Global Area Filesystem',
-    long_description=open('README.md').read(),
     install_requires=[
-        'fusepy >= 2.0.1',
+        'Sphinx',
     ],
     classifiers=[
         'Topic :: Communications :: File Sharing',
