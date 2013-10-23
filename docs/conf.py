@@ -102,7 +102,7 @@ html_theme = 'bootstrap'
 #html_theme_options = {}
 
 html_theme_options = {
-    'bootswatch_theme': "united",
+    'bootswatch_theme': "slate",
     'bootstrap_version': "3",
 }
 
