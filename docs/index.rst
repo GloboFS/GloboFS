@@ -3,18 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to GloboFS's documentation!
-===================================
+GloboFS - Global Remote Filesystem
+==================================
 
 Contents:
 
-.. toctree::
-   :maxdepth: 2
+..  toctree::
+    :maxdepth: 2
 
-Testing
-=======
-
-Hi There
+    concepts
 
 Indices and tables
 ==================
